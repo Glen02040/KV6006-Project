@@ -56,7 +56,7 @@ def showProducer():
         list_of_products1 = []
         for x in list(range(0,len(Data1))):
             list_of_products1.append(Data1[x][1])
-        #if(Data[index][1] in  Data1):
+        
         Productlabel1 = Label(root, text="Quantity in the producer")
         Productlabel1.grid(row=8, column=0)
         amountlabel1 = Label(root, text = Data1[index][2])
@@ -122,7 +122,6 @@ def order():
         os.system('python DistanceCalc.py')
         
         msb.showinfo(title="Success", message="Order was placed! \n")
-        msb.showinfo(title="Delivery", message=delivery)
         
         listbox1.config(state="normal")
         button1.config(state="normal")
@@ -160,11 +159,6 @@ lblProduct = Label(root, text="List of all products").grid(row=0, column = 0)
 var = StringVar(value = list_of_products)
 listbox1 = Listbox(root, listvariable = var)
 listbox1.grid(row=2 , column=0, rowspan=3)
-
-#dropList = OptionMenu(root, product, *list_of_products)
-#dropList.config(width=20)
-#product.set(list_of_products[0])
-#dropList.grid(row=3, column = 1)
 
 btn1 = Button(root, text="Check storage", command=show)
 btn1.grid(row=2, column=1)
