@@ -5,7 +5,9 @@ Created on Wed Dec  2 16:00:12 2020
 """
 
 import requests
-#import smtplib
+from GUI import prod_loc
+
+store_loc = 'Newcastle UK'
 
 # API key
 api_file = open("google-api-key.txt", "r")
@@ -13,16 +15,16 @@ api_key = api_file.read()
 api_file.close()
 
 # home address input
-home = input("Enter a home address\n")
+store_addr = store_loc
 
 # work address input
-work = input("Enter a work address\n")
+producer_addr = prod_loc
 
 # base url
 url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
 
 # get response
-call = url + "origins=" + home + "&destinations=" + work + "&key=" + api_key
+call = url + "origins=" + store_addr + "&destinations=" + producer_addr + "&key=" + api_key
 print(call)
 r = requests.get(call)
 
