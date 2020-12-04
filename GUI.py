@@ -119,7 +119,7 @@ def order():
 # =============================================================================
         prod_loc = Data[index][3]
         print(prod_loc)
-        os.system('python __init__.py')
+        os.system('python DistanceCalc.py')
         
         msb.showinfo(title="Success", message="Order was placed! \n")
         msb.showinfo(title="Delivery", message=delivery)
