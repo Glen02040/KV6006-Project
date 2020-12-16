@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec  2 16:00:12 2020
-@author: justi
+@author: justi, glen, kieran
 """
 
 import csv
@@ -18,6 +18,10 @@ product = StringVar()
 amount = StringVar()
 
 #-----------------------------------------------------------------------------------------------
+
+#Lazy fix for error handling
+producerList = []
+storeList = []
 
 def show():
     global Productlabel, amountlabel, index
@@ -47,7 +51,7 @@ def showProducer():
         print("error")
         msb.showerror(title="Error", message="please select a product from the list")
     else:
-        File1 = open('/Users/justi/Desktop/IoT/Assignment_2/Inventory-Management/Producer.csv')
+        File1 = open('Producer.csv')
         Reader1 = csv.reader(File1)
         Data1 = list(Reader1)
         del(Data1[0])
@@ -61,6 +65,21 @@ def showProducer():
         amountlabel1 = Label(root, text = Data1[index][2])
         amountlabel1.grid(row=8, column=1)
 
+        #Build a List from Producer.csv for error references
+        with open("producer.csv") as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+                if line_count == 0: #first row, define list
+                    #print(f'Column names are {",".join(row)}')
+                    #producerList[]
+                    producerList.append([row[0], row[1], row[2]])
+                    line_count += 1
+                else: #add to list
+                    #print(f'\tthere are {row[2]} {row[1]} in stock.')
+                    producerList.append([row[0], row[1], row[2]])
+
+            #print(producerList)
     return None
 
 
@@ -74,6 +93,7 @@ def placeOrder():
     if(index==-1):
         print("error")
         msb.showerror(title="Error", message="please select a product from the list")
+
     else:
         Orderlabel = Label(root, text="Quantity to order")
         Orderlabel.grid(row=10, column=0)
@@ -94,13 +114,27 @@ def placeOrder():
 
 def order():
     global prod_loc
+    dataString = Data[index][2]
+    dataInt = int(dataString)
     TheAmount = amount.get()
     if(TheAmount==""):
         print("error")
         msb.showerror(title="error", message="Please provide the amount of product to order")
     else:
+        orderAmount = int(TheAmount)
+
+        if(orderAmount<=0):
+            print("error")
+            msb.showerror(title="error", message="Please provide a valid order amount")
+
+        if(orderAmount > dataInt):
+            print("error")
+            msb.showerror(title="error", message="Not enough in stock. Please provide a valid order amount")
+
+
+#   else:
 # =============================================================================
-#         filename = '/Users/justi/Desktop/IoT/Assignment_2/Store.csv'
+#         filename = 'Store.csv'
 #         tempfile = NamedTemporaryFile(delete=False)
 #
 #         fields = ['id', 'product_name', 'quantity']
@@ -149,6 +183,20 @@ File = open('Store.csv')
 Reader = csv.reader(File)
 Data = list(Reader)
 del(Data[0])
+
+#Build a List from Store.csv for error references
+with open("Store.csv") as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line_count = 0
+    for row in csv_reader:
+        if line_count == 0: #first row, define list
+            #print(f'Column names are {",".join(row)}')
+            #storeList[]
+            storeList.append([row[0], row[1], row[2], row[3]])
+            line_count += 1
+        else: #add to list
+            #print(f'\tthere are {row[2]} {row[1]} in stock.')
+            storeList.append([row[0], row[1], row[2], row[3]])
 
 list_of_products = []
 for x in list(range(0,len(Data))):
